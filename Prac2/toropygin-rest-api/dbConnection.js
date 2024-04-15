@@ -2,7 +2,7 @@ const mysql = require("mysql2");
 const db_connection = mysql.createConnection({
  host: "localhost", // имя хоста
  user: "root", // имя пользователя
- database: "group_toropygin", // имя базы данных
+ database: "pe11b_toropygin", // имя базы данных
  password: "", // пароль от базы данных
  })
  .on("error", (err) => {
