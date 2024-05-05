@@ -6,6 +6,8 @@ export default class TransportationStore {
         this._stations = []
         this._busstations = []
         this._selectedTrips = {}
+        this._selectedBusstation = {}
+        this._selectedStation = {}
         this._page = 1
         this._totalCount = 0
         this._limit = 10 // Изменено на 10, чтобы соответствовать вашим маршрутам
@@ -25,6 +27,10 @@ export default class TransportationStore {
 
     setBusstations(busstations) {
         this._busstations = busstations
+    }
+    
+    setSelectedBusstation(busstation) {
+        this._selectedBusstation = busstation
     }
 
     setPage(page) {
@@ -46,8 +52,16 @@ export default class TransportationStore {
         return this._busstations
     }
 
-    get selectedRoute() {
-        return this._selectedRoute
+    get setSelectedTrips() {
+        return this._selectedTrips
+    }
+
+    get selectedBusstation() {
+        return this._selectedBusstation
+    }
+
+    get selectedStation() {
+        return this._selectedStation
     }
 
     get totalCount() {

@@ -3,23 +3,24 @@ import React, { useContext } from 'react';
 import { Context } from '../index';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-/*const TypeBar = observer(() => {
-    const { route: transportationStore } = useContext(Context);
+const TypeBar = observer(() => {
+    const { trip } = useContext(Context); // Изменено на trip
     
-   /* return (
+    return (
         <ListGroup>
-            {transportationStore.routes.map(routeItem => // Исправлено на routeItem
+            {trip.busstations.map(busstation => // Изменено на trip
                 <ListGroup.Item
-                 style={{cursor: 'pointer'}}
-                 active={routeItem.id === transportationStore.selectedRoute?.id} // Исправлено на selectedRoute
-                 onClick={() => transportationStore.setSelectedRoute(routeItem)} // Исправлено на setSelectedRoute и передан текущий маршрут
-                 key={routeItem.id}
+                 style={{cursor: 'pointer', border: busstation.id === trip.selectedBusstation.id ? '1px solid blue' : ''}}
+                 active={busstation.id === trip.setSelectedBusstation.id} // Изменено на trip.setSelectedBusstation
+                 onClick={() => trip.setSelectedBusstation(busstation)} // Изменено на trip.setSelectedBusstation
+                 key={busstation.id}
+                 
                  >
-                    {routeItem.name}
+                    {busstation.name}
                 </ListGroup.Item>
             )}
         </ListGroup>
     );
 });
 
-export default TypeBar; */
+export default TypeBar; 

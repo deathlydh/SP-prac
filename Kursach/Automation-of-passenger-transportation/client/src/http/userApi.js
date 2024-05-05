@@ -17,7 +17,10 @@ export const getAllUsers = async () => {
     const {data} = await $authHost.get('api/user/getAllUsers' )
     return data
 }
-
+export const uvolit = async (id) => {
+    const {data} = await $authHost.post('api/user/uvolit', {id} )
+    return data
+}
 export const check = async () => {
     const { data } = await $authHost.get('api/user/auth');
     localStorage.setItem('token', data.token);

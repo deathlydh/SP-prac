@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Image, Row, Modal} from "react-bootstrap";
 import { Table } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { getOneTrip, updSeats } from '../http/routesApi';
+import { getOneStations, getOneTrip, updSeats } from '../http/routesApi';
 
 
 
@@ -17,33 +17,44 @@ const Transportation = () => {
     price: "Цена",
     departureTime: "Время отбытия",
     arrivalTime: "Время прибытия",
-    hour: "Время в пути"
+    hour: "Время в пути (часов)"
   })
-  const [currentRoute, setCurrentRoute] = useState({})
+
+  
+  const [currentStation, setCurrentStation] = useState({})
   const [seatCount, setSeatCount] = useState(0)
   const [show, setShow] = useState(false)
+  
   const formatTimeFromDB = (dbTime) => {
     const date = new Date(dbTime); 
     const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
     return date.toLocaleString('en-US', options); 
   };
+
+
   useEffect(() => {  
-    getOneTrip(id).then(res => setCurrentRoute(res))
-    setSeatCount(currentRoute.availableSeats)
+    getOneTrip(id).then(res => setCurrentStation(res))
+    setSeatCount(currentStation.availableSeats)
   }, [seatCount])
+
+  useEffect(() => {
+    currentStation.id && getOneStations(id).then(res => setCurrentStation({...currentStation, ...res}))
+  }, [currentStation.id])
+
+console.log(currentStation)
   const buySeat = async () => {
-    await updSeats(currentRoute.id, currentRoute.availableSeats - 1).then(res => setSeatCount(seatCount-1))
+    await updSeats(currentStation.id, currentStation.availableSeats - 1).then(res => setSeatCount(seatCount-1))
     setShow(true)
   }
 
     return (
       <div style={{height: '40vw'}} className='w-100 d-flex flex-column justify-content-center align-items-center'>
-        {currentRoute && <h1>Маршрут {currentRoute.departurePoint}-{currentRoute.arrivalPoint}</h1>}
+        {currentStation && <h1>Маршрут {currentStation.departurePoint}-{currentStation.arrivalPoint}</h1>}
         <Table striped bordered hover className='w-50 me-auto ms-auto mt-5'>
           <thead>
               <tr>
                 {
-                  currentRoute && Object.keys(currentRoute).slice(0, 7).map((title, i) => 
+                  currentStation && Object.keys(currentStation).slice(0, 6).map((title, i) => 
                   <th>{dictionary[title]}</th>)
                 }
                 <th></th>
@@ -52,7 +63,7 @@ const Transportation = () => {
           <tbody>
           <tr >
                 {
-                  currentRoute && Object.values(currentRoute).slice(0, 7).map(title => 
+                  currentStation && Object.values(currentStation).slice(0, 6).map(title => 
                   <td>{title}</td>)
                 }
                 <td><Button onClick={buySeat}>Купить</Button></td>

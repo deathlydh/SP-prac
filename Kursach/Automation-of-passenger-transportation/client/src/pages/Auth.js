@@ -29,8 +29,7 @@ const Auth = observer(() => {
             user.setIsAuth(true)
             navigate(SHOP_ROUTE)
         } catch (e) {
-            console.error('Произошла ошибка при обработке запроса:', e);
-            alert('Произошла ошибка при обработке запроса');
+            alert(e.response.data.message);
         }
 
     }

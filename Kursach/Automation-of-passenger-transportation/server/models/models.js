@@ -22,7 +22,8 @@ const Trip = sequelize.define('trip', {
 
 const Station = sequelize.define('station', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: DataTypes.STRING, allowNull: false }
+    departurePoint: { type: DataTypes.STRING, allowNull: false },
+    arrivalPoint: { type: DataTypes.STRING, allowNull: false }
 });
 
 const BusStation = sequelize.define('busStation', {
@@ -45,6 +46,10 @@ const Basket = sequelize.define('basket', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
 });
 
+const BusStationStation = sequelize.define('busstation_station', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
+})
+
 // Определение связей между моделями
 User.hasOne(Basket);
 Basket.belongsTo(User);
@@ -59,18 +64,17 @@ Admin.belongsTo(User);
 Trip.belongsToMany(Employee, { through: 'EmployeeRoutes' });
 Employee.belongsToMany(Trip, { through: 'EmployeeRoutes' });
 
-Trip.belongsTo(Admin);
-Admin.hasMany(Trip);
+BusStation.hasMany(Trip)
+Trip.belongsTo(BusStation)
+
+Station.hasMany(Trip)
+Trip.belongsTo(Station)
+
+BusStation.belongsToMany(Station, {through: BusStationStation})
+Station.belongsToMany(BusStation, {through: BusStationStation})
 
 // Определение связей с моделями Station и BusStation
-Station.hasMany(Trip, { foreignKey: 'departureStationId' });
-Trip.belongsTo(Station, { as: 'departureStation' });
 
-Station.hasMany(Trip, { foreignKey: 'arrivalStationId' });
-Trip.belongsTo(Station, { as: 'arrivalStation' });
-
-BusStation.hasMany(Trip, { foreignKey: 'busStationId' });
-Trip.belongsTo(BusStation);
 // Экспортируем модели
 module.exports = {
     User,

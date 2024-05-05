@@ -12,7 +12,7 @@ const RouteItem = ({ trip }) => {
 
     return (
         <tr onClick={handleRouteClick} style={{cursor: 'pointer'}}>
-            <td colSpan={2}>{trip.arrival}</td>
+            <td colSpan={2}>{trip.departurePoint} - {trip.arrivalPoint}</td> 
         </tr>
     );
 };

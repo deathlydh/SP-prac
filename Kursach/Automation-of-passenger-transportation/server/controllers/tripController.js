@@ -4,7 +4,7 @@ const ApiError = require('../error/ApiError');
 class TripController {
     async create(req, res, next) {
         try {
-            const { availableSeats, price, departureTime, arrivalTime, hour } = req.body;
+            let { availableSeats, price, departureTime, arrivalTime, hour } = req.body;
             const trip = await Trip.create({ availableSeats, price, departureTime, arrivalTime, hour });
             return res.json(trip);
         } catch (error) {
