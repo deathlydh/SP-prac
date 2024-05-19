@@ -6,8 +6,8 @@ export const createTrip = async (availableSeats, price, departureTime, arrivalTi
 }
 
 export const getAllTrips = async () => {
-    const {data} = await $host.get('/api/trip')
-    return data
+    const response = await $host.get('api/trip')
+    return response.data
 }
 
 export const getOneTrip = async (id) => {

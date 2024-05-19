@@ -1,8 +1,8 @@
 import {$authHost, $host} from "./index";
 import { jwtDecode } from "jwt-decode"; // Используем экспорт jwtDecode из модуля jwt-decode
 
-export const registration = async (email, password) => {
-    const { data } = await $host.post('api/user/registration', { email, password, role: 'ADMIN' });
+export const registration = async (email, password, role) => {
+    const { data } = await $host.post('api/user/registration', { email, password, role: "CLIENT" });
     localStorage.setItem('token', data.token);
     return jwtDecode(data.token); // Используем jwtDecode вместо jwt_decode
 }
@@ -11,6 +11,11 @@ export const login = async (email, password) => {
     const { data } = await $host.post('api/user/login', { email, password });
     localStorage.setItem('token', data.token);
     return jwtDecode(data.token); // Используем jwtDecode вместо jwt_decode
+}
+export const logout = async (id) => {
+    const {data} = await $host.post('api/user/logout', {id})
+    localStorage.removeItem('token')
+    return true
 }
 
 export const getAllUsers = async () => {

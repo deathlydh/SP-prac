@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { getAllUsers } from '../http/userApi';
-import { Context } from '..';
+import { Context } from '../index';
 import { useNavigate } from 'react-router-dom'
 import Table from 'react-bootstrap/Table';
 import UserItem from './UserItem';
@@ -12,9 +12,6 @@ const UserList = () => {
     useEffect(() => {
         getAllUsers().then(res => setUserList(res))
     }, [])
-
-    
-
 
     return (
     <Table striped bordered hover className='mt-4'>

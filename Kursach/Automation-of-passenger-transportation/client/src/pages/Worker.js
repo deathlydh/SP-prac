@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../index';
 import { getAllBusstations, getAllStations, getAllTrips } from '../http/routesApi';
 
-const Shop = observer(() => {
+const Worker = observer(() => {
     const {trip} = useContext(Context)
 
     useEffect(() => {
@@ -27,16 +27,20 @@ const Shop = observer(() => {
 
     return (
         <Container>
-        <Row className="mt-2">
-            <Col md={3}>
-                <TypeBar />
-            </Col>
-            <Col md={9}>
-            <RoutesList />
-            </Col>
-        </Row>
-    </Container>
+            <Row className="mt-2">
+                <Col md={{ span: 5, offset: 3 }} className="text-center">
+                    <h2>Выбор маршрута</h2>
+                </Col>
+            </Row>
+            <Row className="mt-2">
+                <Col md={1}>
+                </Col>
+                <Col md={9}>
+                    <RoutesList />
+                </Col>
+            </Row>
+        </Container>
     );
 });
 
-export default Shop;
+export default Worker;

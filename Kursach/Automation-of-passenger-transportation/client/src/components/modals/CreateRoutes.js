@@ -17,10 +17,14 @@ const CreateRoutes = observer(({ show, onHide }) => {
     const[departurePoint, setDeparturePoint] = useState('')
     const[arrivalPoint, setArrivalPoint] = useState('')
 
+    const getAll = async () => {
+        await getAllBusstations().then(data => trip.setBusstations(data))
+        await getAllStations().then(data => trip.setStations(data))
+       // await getAllTrips().then(res => trip.setTrips(res))
+    }
+
     useEffect(() => {
-        getAllBusstations().then(data => trip.setBusstations(data))
-        getAllStations().then(data => trip.setStations(data))
-        getAllTrips().then(data => trip.setTrips(data))
+       getAll()
     }, []);
 
     const addTrip = async () => {
@@ -30,8 +34,8 @@ const CreateRoutes = observer(({ show, onHide }) => {
       formData.append('departureTime', departureTime)
       formData.append('arrivalTime', arrivalTime)
       formData.append('hour', `${hour}`)
-     // formData.append('stationId', trip.selectedStation.id)
-      //formData.append('busstationId', trip.selectedBusstation.id)
+      formData.append('stationId', trip.selectedStation.id)
+      formData.append('busstationId', trip.selectedBusstation.id)
       await createTrip(availableSeats, price, departureTime, arrivalTime, hour).then(data => onHide())
       // await createStation(departurePoint, arrivalPoint)
     }

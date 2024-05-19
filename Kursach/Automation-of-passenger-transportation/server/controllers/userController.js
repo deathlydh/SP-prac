@@ -41,6 +41,22 @@ class UserController {
         const token = generateJwt(user.id, user.email, user.role)
         return res.json({token})
     }
+    async logout(req, res) {
+        const {id} = req.body
+        const deleteToken = await User.update ({token: null}, {where:{id: id}})
+        return res.json('succes')
+    }
+
+    async getAllUsers(req, res, next){
+        const users = await User.findAll()
+        return res.json(users) 
+    }
+
+    async uvolit(req, res) {
+        const {id} = req.body
+        const user = await User.destroy({where:{id: id}})
+        return res.json('succes')
+    }
 
     async check(req, res, next) {
         const token = generateJwt(req.user.id, req.user.email, req.user.role)

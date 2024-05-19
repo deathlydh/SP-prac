@@ -15,6 +15,8 @@ class TripController {
     async getAll(req, res, next) {
         try {
             const trips = await Trip.findAll();
+            page = page || 1
+        limit = limit || 9
             return res.json(trips);
         } catch (error) {
             next(ApiError.internal(error.message));

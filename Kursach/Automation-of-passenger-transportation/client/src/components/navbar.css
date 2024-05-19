@@ -1,0 +1,11 @@
+.navbar {
+    background: #5b6bf7;
+}
+
+.logo {
+    border: 1px solid transparent;
+    height: 2vw;
+    width: 2vw !important;
+    background-image: url('../assets/bus.png');
+    background-size: cover;
+}

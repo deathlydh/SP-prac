@@ -5,10 +5,11 @@ import CreateDirection from '../components/modals/CreateDirection';
 import CreateRoutes from '../components/modals/CreateRoutes';
 import { Context } from '../index';
 import UserList from '../components/UserList';
-import { REGISTRATION_ROUTE } from '../utils/consts';
+import { REGISTRATION_ROUTE, REGISTRATIONWORKER_ROUTE } from '../utils/consts';
 import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 import {observer} from 'mobx-react-lite'
+
 
 const Admin = () => {
   const {user} = useContext(Context)
@@ -25,7 +26,7 @@ const Admin = () => {
           {user.user.role === 'ADMIN' && <Button
             variant={"outline-dark"}
             className='mt-4 p-2'
-            onClick={() => navigate(REGISTRATION_ROUTE)}
+            onClick={() => navigate(REGISTRATIONWORKER_ROUTE)}
           >
             Зарегистрировать сотрудника
           </Button>}

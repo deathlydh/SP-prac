@@ -1,13 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Image, Row, Modal} from "react-bootstrap";
 import { Table } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { getOneStations, getOneTrip, updSeats } from '../http/routesApi';
+import { observer } from 'mobx-react-lite';
+import { Context } from '..';
 
 
 
 
 const Transportation = () => {
+  const {user} = useContext(Context)
+  const [book, setBook] = useState(false)
   const {id} = useParams()
   const [dictionary, setDictionary] = useState({
     id: 'ID',
@@ -31,20 +35,24 @@ const Transportation = () => {
     return date.toLocaleString('en-US', options); 
   };
 
-
   useEffect(() => {  
     getOneTrip(id).then(res => setCurrentStation(res))
     setSeatCount(currentStation.availableSeats)
-  }, [seatCount])
+  }, [seatCount, show])
 
   useEffect(() => {
     currentStation.id && getOneStations(id).then(res => setCurrentStation({...currentStation, ...res}))
-  }, [currentStation.id])
+  }, [currentStation.id, seatCount])
 
-console.log(currentStation)
+  
   const buySeat = async () => {
     await updSeats(currentStation.id, currentStation.availableSeats - 1).then(res => setSeatCount(seatCount-1))
     setShow(true)
+  }
+
+  const handleBuy = () =>{
+    window.location.reload()
+    setShow(false)
   }
 
     return (
@@ -54,7 +62,7 @@ console.log(currentStation)
           <thead>
               <tr>
                 {
-                  currentStation && Object.keys(currentStation).slice(0, 6).map((title, i) => 
+                  currentStation && Object.keys(currentStation).slice(1, 6).map((title, i) => 
                   <th>{dictionary[title]}</th>)
                 }
                 <th></th>
@@ -63,10 +71,10 @@ console.log(currentStation)
           <tbody>
           <tr >
                 {
-                  currentStation && Object.values(currentStation).slice(0, 6).map(title => 
+                  currentStation && Object.values(currentStation).slice(1, 6).map(title => 
                   <td>{title}</td>)
                 }
-                <td><Button onClick={buySeat}>Купить</Button></td>
+                {user.user.role === 'CLIENT' ? <td><Button onClick={buySeat}>Купить</Button></td> : <td><Button onClick={() => setShow(true)} >Занять маршрут</Button></td>}
           </tr>
 
           </tbody>
@@ -75,9 +83,9 @@ console.log(currentStation)
     <Modal.Header closeButton>
       <Modal.Title>Успех</Modal.Title>
     </Modal.Header>
-    <Modal.Body>Билет приобретен успешно!!</Modal.Body>
+    <Modal.Body>{user.user.role === 'CLIENT' ? 'Билет приобретен успешно!!' : 'Маршрут забронирован успешно'}</Modal.Body>
     <Modal.Footer>
-      <Button variant="secondary" onClick={() => setShow(false)}>
+      <Button variant="secondary" onClick={() => handleBuy()}>
         Close
       </Button>
     </Modal.Footer>
